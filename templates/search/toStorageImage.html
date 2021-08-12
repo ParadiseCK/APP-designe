@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="referrer" content="no-referrer">
+    <title>Title</title>
+</head>
+<link rel="stylesheet" type="text/css" href="../static/lib/layui/css/layui.css" />
+<style type="text/css">
+    #dept_main, #dept_particulars{
+        width: 48.5%;
+        display: inline-block;
+        vertical-align: top;
+        padding: 20px;
+        background: white;
+        box-sizing: border-box;
+    }
+    #dept_tree{
+        margin-top: 20px;
+    }
+    .layui-input-block {
+    margin-left: 150px;
+    margin-right: 10px;
+    min-height: 36px;
+}
+    .layui-form-label {
+    float: left;
+    display: block;
+    padding: 9px 15px;
+    width: 120px;
+    font-weight: 400;
+    line-height: 20px;
+    text-align: right;
+}
+</style>
+<body>
+
+<div id="dept_main" style="margin-right: 2%;">
+    <fieldset class="layui-elem-field layui-field-title">
+        <legend>收藏备注信息</legend>
+    </fieldset>
+    <form class="layui-form">
+    <div class="layui-form-item">
+        <label class="layui-form-label">图像名称</label>
+        <div class="layui-input-block">
+            <input type="text" id="imageName" lay-verify="imageName" autocomplete="off" placeholder="请输图像名称" class="layui-input">
+        </div>
+    </div>
+    <div class="layui-form-item">
+    <label class="layui-form-label">请选择图像收藏库</label>
+    <div class="layui-input-block">
+      <select name="interest" lay-filter="categray1" id="libId">
+        <option value=""></option>
+        <option value="0">图案库</option>
+        <option value="1" >款式手稿库</option>
+        <option value="2">款式细节库</option>
+        <option value="3">面料库</option>
+        <option value="4">服饰品库</option>
+        <option value="5">灵感源库</option>
+      </select>
+    </div>
+  </div>
+    <div class="layui-form-item" id="detailClassBox">
+        <label class="layui-form-label">收藏库的具体类</label>
+        <div class="layui-input-block">
+            <div class="layui-unselect layui-form-select downpanel" id="detailClass">
+                <div class="layui-select-title">
+                    <span class="layui-input layui-unselect" id="treeclass">选择分类</span>
+                    <input type="hidden" id="selectID" value="0">
+                    <i class="layui-edge"></i>
+                </div>
+                <dl class="layui-anim layui-anim-upbit">
+                    <dd>
+                        <ul id="classtree"></ul>
+                    </dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+    <div class="layui-form-item layui-form-text">
+        <label class="layui-form-label">图像描述</label>
+        <div class="layui-input-block">
+            <textarea placeholder="请输入内容" class="layui-textarea" id="remark"></textarea>
+        </div>
+    </div><div class="layui-form-item">
+        <div class="layui-input-block">
+            <button type="button"  class="layui-btn layui-btn-normal layui-btn-radius" onclick="saveData()">图像入库</button>
+        </div>
+    </div>
+
+</form>
+</div>
+<div id="dept_particulars">
+    <fieldset class="layui-elem-field layui-field-title">
+        <legend>图像展示</legend>
+    </fieldset>
+    <div id="dept_home">
+        <img id="imgShow" src="{{ img_url }}" style="width: 100%;height: 100%">
+    </div>
+
+
+
+</div>
+</body>
+<script type="text/javascript" src="../static/graphics/js/jquery.min.js"></script>
+<script type="text/javascript" src="../static/lib/layui/layui.js" charset="utf-8"></script>
+<script type="text/javascript" src="../static/lib/layui-tree2.0-master/layui-xtree/layui-xtree.js"></script>
+<script type="text/javascript">
+    var treeData =[{title: "请先选择大类别", value: "second", data: []}];
+layui.use(['upload', 'element', 'layer','slider'], function(){
+      var $ = layui.jquery
+      ,element = layui.element
+      ,form = layui.form
+      ,layer = layui.layer;
+        form.on('select(categray1)',function (data) {
+            $("#detailClassBox").hide();
+            var bigClass = data.value;
+            $.ajax({
+             async:false,    // 这个需要写上
+             url:'/getFenleiTree',
+             type:'post',
+             dataType:'json',
+             data:{'bigClass':bigClass},
+             success:function (result) {
+             if(result.status){
+
+                treeData = result.treeData;
+                console.log(treeData);
+                var fenleiTree = new layuiXtree({
+                    elem: 'classtree'    //(必填) 放置xtree的容器，样式参照 .xtree_contianer
+                    , form: form        //(必填) layui 的 from
+                    , data: treeData   //(必填) json数据
+                    , isopen: false
+                    , click: function (data) { //节点选中状态改变事件监听，全选框有自己的监听事件
+                        $("#treeclass").html(data.elem.title);
+                        $("#selectID").val(data.value);
+                        //设置只能单选
+                　　　　　　　　　　　 //获取所有选中节点
+                        var oCks = fenleiTree.GetAllCheckBox();
+                　　　　　　　　　　　 // 循环数组，如果值不等于当前选中的值，将选中状态设为false
+                        for (var i = 0; i < oCks.length; i++) {
+                            if(oCks[i].value!=data.value) {
+                                $(oCks[i]).prop("checked",false)
+                            }
+                        }
+                        form.render('checkbox');
+                         }
+                     });
+                $("#detailClassBox").show();
+             }else{
+                console.log("");
+             }
+             }
+         });
+        $(".downpanel").on("click", ".layui-select-title", function (e) {
+            $("#detailClass").not($(this).parents("#detailClass")).removeClass("layui-form-selected");
+            $(this).parents(".downpanel").toggleClass("layui-form-selected");
+            layui.stope(e);
+        }).on("click", "dl i", function (e) {
+            layui.stope(e);
+        });
+        $(document).on("click", function (e) {
+            $("#detailClass").removeClass("layui-form-selected");
+        });
+
+        });
+
+    });
+
+function saveData() {
+   var imageName = $("#imageName").val();
+   var lib = $('#libId option:selected') .val();
+   var type = $("#treeclass").text();
+   var typeValue = $("#selectID").val();
+   var title = $("#remark").val();
+   var  imageUrl = $("#imgShow")[0].src;
+   alert(imageUrl);
+   if(imageName ==""){
+       layer.alert("请填写图像名称！");
+       return false;
+   }
+   if(lib ==""){
+       layer.alert("请选择收藏库类别！");
+       return false;
+   }
+   if(typeValue =="0"){
+       layer.alert("请选择图像分类！");
+       return false;
+   }
+   if(title ==""){
+       layer.alert("请填写图像描述！");
+       return false;
+   }
+    $.post("/saveStorageImage",{
+            imageName:imageName,
+            type:type,
+            title:title,
+            lib:lib,
+            imageUrl:imageUrl
+            },function(result){
+            if(result.status){
+                layer.alert(result.msg);
+                parent.layer.closeAll();
+            }else{
+                layer.alert(result.msg);
+            }
+        },'json');
+}
+</script>
+</html>

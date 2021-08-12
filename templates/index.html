@@ -1,0 +1,141 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>时装素材网</title>
+<meta name="keywords" content="" />
+<meta  name="description" content="" />
+<link rel="stylesheet" type="text/css" href="../static/index/css/style1.css">
+<script src="../static/index/js/jquery-1.7.2.min.js"></script>
+<script src="../static/index/js/fadeswitch.js"></script>
+<script src="../static/index/js/globa.js"></script>
+<script type="text/javascript" src="../static/index/js/sucai.js" ></script>
+<script type="text/javascript" src="../static/index/js/subject.js"></script></head>
+
+<body>
+<div class="headerBox">
+  <div class="header">
+    <div class="top">
+        <br>
+        <br>
+{#      <div class="logo"><a href="index.html"><img src="img/logo.png" width="294" height="84" /></a></div>#}
+{#      <div class="hotline"><img src="../static/index/img/hotline.png" width="240" height="84" /></div>#}
+    </div>
+  </div>
+  <div class="navBox">
+    <div class="nav">
+      <ul>
+        <li class="current navLI"><a href="#">首页
+          <p>home</p>
+          </a>
+        </li>
+        <li class="navLI "><a href="/main" target="_blank">后台
+          <p>console</p>
+          </a>
+        </li>
+        <li class="navLI "><a href="#">素材
+          <p>material</p>
+          </a>
+          <ul class="subnav">
+            <span></span>
+            <li><a href="/graphics" target="_blank">图案</a></li>
+            <li><a href="/styles" target="_blank">款式手稿</a></li>
+            <li><a href="/details" target="_blank">款式细节</a></li>
+            <li><a href="/fabrics" target="_blank">面料</a></li>
+            <li><a href="/accessories" target="_blank" >服饰品</a></li>
+            <li><a href="/inspiration" target="_blank" >灵感源</a></li>
+          </ul>
+        </li>
+          <li class="navLI "><a href="#">素材搜集
+          <p>celession</p>
+          </a>
+          <ul class="subnav">
+            <span></span>
+            <li><a href="/searchImage" target="_blank">以图搜图</a></li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+<div class="banner">
+  <div id="imageShow">
+    <ul class="imagebg" id="imagebg">
+      <li data-sPic="../static/index/UpLoadFile/productImage/20150509094557.jpg"> <a href="#" title="品牌女装加盟" target=_blank class="bannerbg_main" style="background: url(../static/index/UpLoadFile/productImageS/20150509094603.jpg) no-repeat  top center;width:100%;height:735px; " ></a> </li>
+      <li data-sPic="../static/index/UpLoadFile/productImage/20150509094617.jpg"> <a href="#" title="女装品牌加盟" target=_blank class="bannerbg_main" style="background: url(../static/index/UpLoadFile/productImageS/20150509094629.jpg) no-repeat  top center;width:100%;height:735px; " ></a> </li>
+      <li data-sPic="../static/index/UpLoadFile/productImage/20150509094642.jpg"> <a href="#" title="女装加盟" target=_blank class="bannerbg_main" style="background: url(../static/index/UpLoadFile/productImageS/20150509094648.jpg) no-repeat  top center;width:100%;height:735px; " ></a> </li>
+    </ul>
+    <div class="scrollbg">
+      <div class="scroll"> <a id="left_img_btn" class="s_pre" href="javascript:void(0)"></a>
+        <div class="current" id="current"></div>
+        <div class="outScroll_pic">
+          <ul class="scroll_pic cls" id="small_pic">
+          </ul>
+        </div>
+        <a id="right_img_btn" class="s_next" href="javascript:void(0)"></a> </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript" src="../static/index/js/imgSlider.js"></script>
+<script type="text/javascript">
+	img.init();
+	img.play(0);
+	//阻止事件冒泡
+
+	function estop(e){
+		var e=arguments.callee.caller.arguments[0]||event;
+		if (e && e.stopPropagation){
+		//因此它支持W3C的stopPropagation()方法
+		   e.stopPropagation();
+		}else{
+		//否则，我们需要使用IE的方式来取消事件冒泡
+		   window.event.cancelBubble = true;
+		   return false;
+		}
+	}
+</script>
+<div class="mainBox">
+  <dl class="brand">
+    <dt><a href="#">
+      <p>店面实拍</p>
+      </a></dt>
+    <dd class="brand1"> <a title="女装加盟" href=""><img src="../static/index/UpLoadFile/productImage/20141117033506.jpg" width="277" height="217"></a> <a title="品牌女装加盟" href=""><img src="../static/index/UpLoadFile/productImage/20141117033518.jpg" width="277" height="217"></a> </dd>
+    <dd class="brand2"> <a title="品牌女装加盟" href="" class="zs"><img src="../static/index/UpLoadFile/productImage/20141117033528.jpg" width="247" height="246" /></a> <a title="女装品牌加盟" href=""><img src="../static/index/UpLoadFile/productImage/20141117033539.jpg" width="191" height="246" /></a> <a title="女装品牌加盟" href=""><img src="../static/index/UpLoadFile/productImage/20141117033550.jpg" width="440" height="190" /></a> </dd>
+    <dd class="brand3"> <a title="女装加盟" href=""><img src="../static/index/UpLoadFile/productImage/20141117033605.jpg" width="277" height="217" /></a> <a title="品牌女装加盟" href=""><img src="../static/index/UpLoadFile/productImage/20141117033617.jpg" width="277" height="217" /></a> </dd>
+  </dl>
+  <div class="VideoBox">
+  <div class="porBOx">
+    <div id="phoneCarousel">
+      <div class="pTitle"><img src="../static/index/img/portitle.jpg" width="277" height="56" /></div>
+      <div id="box">
+        <pre class="prev">prev</pre>
+        <pre class="next">next</pre>
+        <ul>
+          <li><img src="../static/index/UpLoadFile/productImage/20150508051136.jpg" /></li>
+          <li><img src="../static/index/UpLoadFile/productImage/20150508051147.jpg" /></li>
+          <li><img src="../static/index/UpLoadFile/productImage/20150508051158.jpg" /></li>
+          <li><img src="../static/index/UpLoadFile/productImage/20150508051225.jpg" /></li>
+          <li><img src="../static/index/UpLoadFile/productImage/20150508051236.jpg" /></li>
+          <li><img src="../static/index/UpLoadFile/productImage/20150508051248.jpg" /></li>
+          <li><img src="../static/index/UpLoadFile/productImage/20150508051300.jpg" /></li>
+          <li><img src="../static/index/UpLoadFile/productImage/20150508051311.jpg" /></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="footer">
+  <div class="foot">
+    <div class="foot-t">
+    <div class="foot-b">
+      <div class="zbdz fl"> <span>总部地址：********* &nbsp;全国24小时免费电话：*********  传真：*************</span>
+        <p> Copyright @ ************************** &nbsp;&nbsp;ICP备案：<a href="#" target="_blank" style="color:#fff;">***********************</a> </p>
+      </div>
+      <div class="scriptDiv">
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+</body>
+</html>

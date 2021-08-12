@@ -1,0 +1,285 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
+
+<head>
+<meta charset="UTF-8">
+<title>款式细节素材</title>
+<link rel="stylesheet" type="text/css" href="../static/lib/layui/css/layui.css" />
+<link rel="stylesheet" type="text/css" href="../static/graphics/usteel-search/search.css" />
+
+<link rel="stylesheet" type="text/css" href="../static/graphics/index/css/index.css">
+<link rel="stylesheet" type="text/css" href="../static/graphics/index/css/lunbo.css">
+<link rel="stylesheet" href="../static/lib/pictureView/css/pictureViewer.css">
+<script src="../static/graphics/index/js/jquery-1.8.3.min.js"></script>
+<script src="../static/graphics/index/js/public.js"></script>
+<link rel="stylesheet" href="../static/main/css/font.css">
+<link rel="stylesheet" href="../static/main/css/xadmin.css">
+</head>
+<style>
+    .pinpai {
+    width: 1200px;
+    height: auto;
+    float: right;
+    margin-top: 5px;
+}
+    .bigrongqi ul li a {
+    display: block;
+    width: 225px;
+    height: 278px;
+    background: #fff;
+    transition: all 0.3s;
+    text-align: center;
+    position: relative;
+}
+    .bigrongqi ul li {
+    width: 225px;
+    height: 298px;
+    float: left;
+    margin-left: 8px;
+    margin-bottom: 8px;
+}
+    .usteel-content {
+    padding: 0px 0;
+}
+</style>
+<body>
+<!--顶部菜单-->
+<div class="dy1">
+	<div class="dy2">
+        <ul class="dy3">
+            <li><a href="#">款式细节素材<br/>款式素材</a></li>
+        </ul>
+        <ul class="dy4">
+            {% if username !="" and username !=None %}
+            <li><a href="#">{{ username }}<br/>{{ username }}</a></li>
+            <li><a href="/logout?next=/details">退出<br/>退出</a></li>
+            {% endif %}
+            {% if username =="" or  username ==None%}
+            <li><a href="/login?next=/details">登陆<br/>登陆</a></li>
+            {% endif %}
+            <li><a href="/index">首页<br/>首页</a></li>
+            <li><a href="/main">后台<br/>后台</a></li>
+
+        </ul>
+
+    </div>
+</div>
+
+<div class="usteel-content w">
+	<div class="usteel-condition" id="usteel-condition">
+		<!-- 优钢网索引插件 -->
+		<div class="selector" >
+        <div class="search-bottom display-flex" style="height: 60px;">
+				<p style="width: 100%;">
+					<span>模糊搜索：</span>
+					<input type="text" name="start_diameter" id="start_diameter" value="" style="width: 90%;height: 45px;">
+
+				</p>
+
+				<p class="display-flex">
+					<a href="JavaScript:;" class="_reset" style="height: 45px;line-height: 45px;">重置</a>
+{#					<a href="JavaScript:;" class="_search" style="height: 45px;line-height: 45px;">搜索</a>#}
+                    <a href="JavaScript:;" id="_search" style="height: 45px;line-height: 45px;">搜索</a>
+				</p>
+			</div>
+            {% for detailsFenlei in detailsFenleis %}
+            <div class="usteel-search" data_type="title">
+				<div class="sl-key" id = "{{ detailsFenlei.value }}">
+					<strong>{{ detailsFenlei.title }}：</strong>
+				</div>
+				<div class="sl-value">
+					<div class="sl-v-list">
+						<ul>
+							{% for children in detailsFenlei.data %}
+							<li data_id="{{ children.value }}"  data_value = "{{ children.title }}">
+								<a href="javascript:;">
+									<i class=""></i><span>{{ children.title }}</span>
+								</a>
+							</li>
+							{% endfor %}
+
+						</ul>
+					</div>
+					<div class="sl-btns">
+						<a href="JavaScript:;" class="btn btn-primary disabled">确定</a>
+						<a href="JavaScript:;" class="btn btn-default">取消</a>
+					</div>
+				</div>
+				<div class="sl-ext">
+					<a href="JavaScript:;" class="sl-b-more" style="visibility: hidden;"><i class="layui-icon layui-icon-down"></i>更多</a>
+					<a href="JavaScript:;" class="sl-b-multiple"><i class="layui-icon layui-icon-add-1"></i>多选</a>
+				</div>
+			</div>
+            {% endfor %}
+
+		</div>
+	</div>
+
+<iframe id="graphicslist" width='100%' height='100%' frameborder=0 src="./detailsList?page=1&limit=30">
+
+
+</iframe>
+</div>
+
+<center id="page" class="page"></center><center id="page" class="page"></center>
+
+
+</div>
+<!--页脚-->
+<!--footer-->
+<div class="footer">
+	<div class="box" style=" width:1226px; height:200px; margin:0 auto">
+
+        <ul class="adv" style="margin-top: 50px">
+        	<li>种类繁多</li>
+            <li>智能搜集</li>
+            <li>最新数据</li>
+            <li style="border-right:none;">实物拍摄</li>
+        </ul>
+        <p class="ad">xxxxxxxxx &nbsp;&nbsp;&nbsp;邮箱：xxxxxxxxxx &nbsp;&nbsp;&nbsp;邮编:xxxxxxx &nbsp;&nbsp;&nbsp;电话:xxxxxxxxxx</p>
+        <p class="ad">Copyright © xxxxxx, 版权所有 xxxxxxxx &nbsp;&nbsp;xxxxxxxxx</p>
+    </div>
+</div>
+
+</body>
+
+<script type="text/javascript" src="../static/graphics/js/jquery.min.js"></script>
+<script type="text/javascript" src="../static/graphics/layui/layui.js" charset="utf-8"></script>
+<script type="text/javascript" src="../static/graphics/usteel-search/search.js"></script>
+<script src="../static/lib/pictureView/js/jquery.mousewheel.min.js"></script>
+<script src="../static/lib/pictureView/js/pictureViewerV1.js"></script>
+<script type="text/javascript">
+    window.onload= iframeAutoHeight();
+
+    function iframeAutoHeight() {
+        var iframes = document.getElementsByTagName('iframe');
+
+        for (var i = 0, j = iframes.length; i < j; ++i) {
+            // 放在闭包中，防止iframe触发load事件的时候下标不匹配
+            (function(_i) {
+                iframes[_i].onload = function() {
+                    this.contentWindow.onbeforeunload = function() {
+                        iframes[_i].style.visibility = 'hidden';
+                        // iframes[_i].style.display = 'none';
+
+                        iframes[_i].setAttribute('height', 'auto');
+                    };
+
+                    this.setAttribute('height', this.contentWindow.document.body.scrollHeight);
+
+                    this.style.visibility = 'visible';
+                    // this.style.display = 'block';
+                };
+            })(i);
+        }
+    }
+    var username = '{{ username }}';
+    var queryValue = "";
+    var keyValues = "";
+    var currPage = "1";
+    var limitPage ="30";
+    var total = "{{ count.count }}";
+    flusPage(total);
+    function flusPage(total_) {
+    layui.use(['form', 'layedit', 'laydate', 'carousel', 'element', 'laypage'], function() {
+	var layer = layui.layer,
+		laypage = layui.laypage,
+		element = layui.element;
+	laypage.render({
+		elem: 'page',
+		count: total_,
+		layout: ['page', 'limit', 'skip', 'count', ],
+		theme: '#3e88f5',
+		curr: currPage, //获取起始页
+		limit: limitPage,
+		jump: function(obj, first) {
+			//obj包含了当前分页的所有参数，比如：
+			//		    console.log(obj.curr); //得到当前页，以便向服务端请求对应页的数据。
+			//		    console.log(obj.limit); //得到每页显示的条数
+			//首次不执行
+			if(!first) {
+			    currPage = obj.curr;
+			    limitPage =obj.limit;
+				//					var load = layer.load(2, {shade: [0.1,'#000']});
+                var skipUrl = "./detailsList?page=" + obj.curr + "&limit=" + obj.limit+ "&keyValues=" + keyValues+ "&q=" + queryValue;
+                var _iframe = document.getElementById('graphicslist');
+                _iframe.src= skipUrl;
+			}
+		}
+	});
+});
+}
+
+
+function relaodData() {
+    currPage ="1";
+    var start = 1;
+    var limit =limitPage;
+    var url = "./detailsList?page=" + start + "&limit=" + limit+ "&keyValues=" + keyValues+ "&q=" + queryValue;
+    var _iframe = document.getElementById('graphicslist');
+    _iframe.src= url;
+}
+
+$("#_search").on("click",function(){
+	queryValue = $("#start_diameter").val();
+	relaodData();
+});
+
+function imageView(imagesArr, initIndex, idsArr) {
+        $.pictureViewer({
+			images: imagesArr, //需要查看的图片，数据类型为数组
+			initImageIndex: initIndex, //初始查看第几张图片，默认1
+            idsArr:idsArr,
+			scrollSwitch: true //是否使用鼠标滚轮切换图片，默认false
+		});
+}
+
+function storageImage(id, status) {
+    var storageStatus = 0;
+    if (username=="" || username=="None"){
+        location.href="login?next=/details"
+        return false;
+    }
+    if(status){
+        storageStatus = 1;
+    }
+    else {
+        storageStatus = 0;
+    }
+    $.post("/addDetailsStorage",{
+                    storageStatus:storageStatus,
+                    username:username,
+                    imageId:id
+                    },function(result){
+                    if(result.status){
+                        layer.msg(result.msg);
+
+                    }else{
+                        layer.msg(result.msg);
+                    }
+                },'json');
+
+}
+function judegeChecked(imageId) {
+    if (username=="" || username=="None"){
+        return false;
+    }
+    var data = {imageId:imageId,username:username}
+    var Status = false;
+    $.ajax({
+        type :"post",
+        url :"/getMySorageDetailsById",
+        data :data,
+        async :false,
+        success :function(data){
+                    if(data.status ==1){
+                        Status= true;
+                    }else{
+                        Status= false;
+                    }
+        }});
+    return Status;
+}
+</script>
+
+</html>

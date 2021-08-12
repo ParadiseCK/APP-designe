@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html class="x-admin-sm">
+    <head>
+        <meta charset="UTF-8">
+        <title>欢迎页面-X-admin2.2</title>
+        <meta name="renderer" content="webkit">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="viewport" content="width=device-width,user-scalable=yes, minimum-scale=0.4, initial-scale=0.8,target-densitydpi=low-dpi" />
+        <link rel="stylesheet" href="../static/main/css/font.css">
+        <link rel="stylesheet" href="../static/main/css/xadmin.css">
+        <script src="../static/main/lib/layui/layui.js" charset="utf-8"></script>
+        <script type="text/javascript" src="../static/main/js/xadmin.js"></script>
+        <!--[if lt IE 9]>
+          <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
+          <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
+    </head>
+    <body>
+        <div class="layui-fluid">
+            <div class="layui-row layui-col-space15">
+
+                <div class="layui-col-sm12 layui-col-md6">
+                    <div class="layui-card">
+                        <div class="layui-card-header">最新一周新增素材量</div>
+                        <div class="layui-card-body" style="min-height: 280px;">
+                            <div id="main1" class="layui-col-sm12" style="height: 300px;"></div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-sm12 layui-col-md6">
+                    <div class="layui-card">
+                        <div class="layui-card-header">最新一周各图库存增量</div>
+                        <div class="layui-card-body" style="min-height: 280px;">
+                            <div id="main2" class="layui-col-sm12" style="height: 300px;"></div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-sm12 layui-col-md6">
+                    <div class="layui-card">
+                        <div class="layui-card-header">素材来源占比</div>
+                        <div class="layui-card-body" style="min-height: 280px;">
+                            <div id="main3" class="layui-col-sm12" style="height: 300px;"></div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-sm12 layui-col-md6">
+                    <div class="layui-card">
+                        <div class="layui-card-header">最新一周各类素材的收藏量</div>
+                        <div class="layui-card-body" style="min-height: 280px;">
+                            <div id="main4" class="layui-col-sm12" style="height: 300px;"></div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>pip freeze > requirements.txt
+        </div>
+
+{#        <script src="https://cdn.bootcss.com/echarts/4.2.1-rc1/echarts.min.js"></script>#}
+        <script src="../static/main/js/echarts.min.js"></script>
+        <script src="../static/main/js/theme/macarons.js"></script>
+        <script type="text/javascript">
+        // 基于准备好的dom，初始化echarts实例
+        var data1 = {{ allDataWeek|tojson}};
+        var data2 = {{ zhanbiData |tojson }};
+        console.log(data2);
+        var data3 = {{ storageData|tojson }};
+        var data4 = data3.nums
+        var myChart = echarts.init(document.getElementById('main1'), 'macarons');
+
+        // 指定图表的配置项和数据
+        var option = {
+            grid: {
+                top: '5%',
+                right: '1%',
+                left: '1%',
+                bottom: '10%',
+                containLabel: true
+            },
+            tooltip: {
+                trigger: 'axis'
+            },
+            xAxis: {
+                type: 'category',
+                data: data1.lables
+            },
+            yAxis: {
+                type: 'value'
+            },
+            series: [{
+                name:'新增量',
+                data: data1.totalnums,
+                type: 'line',
+                smooth: true
+            }]
+        };
+
+
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('main2'), 'macarons');
+
+        // 指定图表的配置项和数据
+        var option = {
+            tooltip : {
+                trigger: 'axis',
+                axisPointer: {
+                    type: 'cross',
+                    label: {
+                        backgroundColor: '#6a7985'
+                    }
+                }
+            },
+            grid: {
+                top: '5%',
+                right: '2%',
+                left: '1%',
+                bottom: '10%',
+                containLabel: true
+            },
+            xAxis : [
+                {
+                    type : 'category',
+                    boundaryGap : false,
+                    data : data1.lables
+                }
+            ],
+            yAxis : [
+                {
+                    type : 'value'
+                }
+            ],
+            series : [
+                {
+                    name:'图案',
+                    type:'line',
+                    areaStyle: {normal: {}},
+                    data:data1.graphics,
+                    smooth: true
+                },
+                {
+                    name:'款式手稿',
+                    type:'line',
+                    areaStyle: {normal: {}},
+                    data:data1.styles,
+                    smooth: true,
+
+                },
+                 {
+                    name:'面料',
+                    type:'line',
+                    areaStyle: {normal: {}},
+                    data:data1.fabrics,
+                    smooth: true
+                },
+                {
+                    name:'款式细节',
+                    type:'line',
+                    areaStyle: {normal: {}},
+                    data:data1.details,
+                    smooth: true,
+
+                },
+                {
+                    name:'服饰品',
+                    type:'line',
+                    areaStyle: {normal: {}},
+                    data:data1.accessories,
+                    smooth: true
+                },
+                {
+                    name:'灵感源',
+                    type:'line',
+                    areaStyle: {normal: {}},
+                    data:data1.inspiration,
+                    smooth: true,
+
+                }
+
+            ]
+        };
+
+
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+
+
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('main3'), "macarons");
+
+        // 指定图表的配置项和数据
+        var option = {
+            tooltip : {
+                trigger: 'item',
+                formatter: "{a} <br/>{b} : {c} ({d}%)"
+            },
+            legend: {
+                orient: 'vertical',
+                left: 'left',
+                data: data2.lables
+            },
+            series : [
+                {
+                    name: '素材来源',
+                    type: 'pie',
+                    radius : '55%',
+                    center: ['50%', '60%'],
+                    data:data2.nums,
+                    itemStyle: {
+                        emphasis: {
+                            shadowBlur: 10,
+                            shadowOffsetX: 0,
+                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                        }
+                    }
+                }
+            ]
+        };
+
+
+
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+
+         // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('main4'),'macarons');
+
+        // 指定图表的配置项和数据
+        option = {
+    tooltip: {
+        trigger: 'axis',
+        axisPointer: {            // 坐标轴指示器，坐标轴触发有效
+            type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+        }
+    },
+    legend: {
+        data: ['图案', '款式手稿', '款式细节', '面料', '服饰品', '灵感源']
+    },
+    grid: {
+        left: '3%',
+        right: '4%',
+        bottom: '3%',
+        containLabel: true
+    },
+    xAxis: [
+        {
+            type: 'category',
+            data: data3.lables
+        }
+    ],
+    yAxis: [
+        {
+            type: 'value'
+        }
+    ],
+    series: [
+        {
+            name: '图案',
+            type: 'bar',
+            stack: '素材',
+            emphasis: {
+                focus: 'series'
+            },
+            data: data4.graphics
+        },
+        {
+            name: '款式手稿',
+            type: 'bar',
+            stack: '素材',
+            emphasis: {
+                focus: 'series'
+            },
+            data: data4.styles
+        },
+        {
+            name: '款式细节',
+            type: 'bar',
+            stack: '素材',
+            emphasis: {
+                focus: 'series'
+            },
+            data: data4.details
+        },
+        {
+            name: '面料',
+            type: 'bar',
+            stack: '素材',
+            emphasis: {
+                focus: 'series'
+            },
+            data: data4.fabrics
+        },
+        {
+            name: '服饰品',
+            type: 'bar',
+            stack: '素材',
+            emphasis: {
+                focus: 'series'
+            },
+            data: data4.accessories
+        },
+        {
+            name: '灵感源',
+            type: 'bar',
+            stack: '素材',
+            emphasis: {
+                focus: 'series'
+            },
+            data: data4.inspiration
+        }
+    ]
+};
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+    </script>
+    </body>
+</html>

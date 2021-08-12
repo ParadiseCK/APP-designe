@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "layui-xtree3.0发布gitee", ".", "{FE453C53-1B25-4AAD-86B4-34FEE338D2B5}"
+	ProjectSection(WebsiteProperties) = preProject
+		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.0"
+		Debug.AspNetCompiler.VirtualPath = "/localhost_5281"
+		Debug.AspNetCompiler.PhysicalPath = "F:\插件们\LayuiXtree\layui-xtree3.0发布gitee\"
+		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_5281\"
+		Debug.AspNetCompiler.Updateable = "true"
+		Debug.AspNetCompiler.ForceOverwrite = "true"
+		Debug.AspNetCompiler.FixedNames = "false"
+		Debug.AspNetCompiler.Debug = "True"
+		Release.AspNetCompiler.VirtualPath = "/localhost_5281"
+		Release.AspNetCompiler.PhysicalPath = "F:\插件们\LayuiXtree\layui-xtree3.0发布gitee\"
+		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_5281\"
+		Release.AspNetCompiler.Updateable = "true"
+		Release.AspNetCompiler.ForceOverwrite = "true"
+		Release.AspNetCompiler.FixedNames = "false"
+		Release.AspNetCompiler.Debug = "False"
+		VWDPort = "5281"
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{FE453C53-1B25-4AAD-86B4-34FEE338D2B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FE453C53-1B25-4AAD-86B4-34FEE338D2B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

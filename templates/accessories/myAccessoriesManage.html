@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html class="x-admin-sm">
+
+    <head>
+        <meta charset="UTF-8">
+        <title>欢迎页面-X-admin2.2</title>
+        <meta name="renderer" content="webkit">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta name="viewport" />
+        <link rel="stylesheet" href="../static/main/css/font.css">
+        <link rel="stylesheet" href="../static/main/css/xadmin.css">
+        <link rel="stylesheet" href="../static/lib/pictureView/css/pictureViewer.css">
+        <script src="../static/main/lib/layui/layui.js" charset="utf-8"></script>
+        <script type="text/javascript" src="../static/main/js/xadmin.js"></script>
+
+
+    </head>
+
+    <body>
+    <div class="layui-table-toolbar" style="margin-bottom: 3px;">
+	<div class="layui-btn-group">
+ 	 </div>
+    </div>
+
+    <div class="layui-form layui-form-pane" style="margin-bottom: 3px; "  >
+        <div class="layui-form-item" style="margin-bottom: 1px; min-width:1051px;">
+
+            <div class="layui-input-inline" style="width: 50px;margin-left: 10px;margin-rigth: 10px;">
+                    <a class="layui-btn" onclick="addNewData()">添加</a>
+            </div>
+            <label class="layui-form-label" style="width: 97px;">搜索</label>
+            <div class="layui-input-inline" style="width: 300px; margin-right: 0px;">
+                   <input id="q" type="text" name="q" lay-verify="q" autocomplete="off" placeholder="" class="layui-input">
+            </div>
+            <div class="layui-input-inline" style="width: 50px;margin-left: 10px;margin-rigth: 10px;">
+                    <a class="layui-btn" onclick="reload_data()">查询</a>
+            </div>
+            <div class="layui-input-inline" style="width: 50px;margin-left: 10px;">
+                    <a class="layui-btn" onclick="clear_data()">清空</a>
+            </div>
+            <div class="layui-input-inline" style="width: 50px;margin-left: 10px;">
+                    <a class="layui-btn" onclick="clear_data()">刷新</a>
+            </div>
+        </div>
+    </div>
+   <table class="layui-hide"   id="table" lay-filter="table"></table>
+
+
+    </body>
+    <style type="text/css">
+        .layui-table-cell{
+        text-align:center;
+        height: 45px;
+        line-height: 45px;
+        white-space: normal;
+        }
+{#        .layui-table img{#}
+{#        max-width:48px;#}
+{#        max-height: 50px;#}
+{#        }#}
+    </style>
+    <script type="text/javascript" src="../static/graphics/js/jquery.min.js"></script>
+    <script src="../static/lib/pictureView/js/pictureViewer.js"></script>
+
+    <script src="../static/lib/pictureView/js/jquery.mousewheel.min.js"></script>
+    <script type="text/javascript">
+        layui.use([ 'laydate', 'laypage', 'layer', 'table', 'carousel',
+				'upload', 'element' ,'tree'], function() {
+			var laydate = layui.laydate //日期
+			, laypage = layui.laypage //分页
+			,form= layui.form
+			layer = layui.layer //弹层
+			, table = layui.table //表格
+			, carousel = layui.carousel //轮播
+			, upload = layui.upload //上传
+			,tree = layui.tree
+			, element = layui.element ;//元素操作
+			  table.render({
+				  id:'sceneId',
+				   elem: '#table',
+				 url: '/myAccessoriesManageList',
+			    height: 'full-100',
+			    cellMinWidth: 80 ,
+			    toolbar: '#toolbarSearch',
+
+			   cols: [[
+{#			      {checkbox: true, fixed: true},#}
+			      {field:'imageId', title: '图像ID', align:'center'}
+			      ,{field:'provider', title: '提供者', align:'center'}
+			      ,{field:'creatDate', title: '入库时间', align:'center', templet: function (d) {
+			          var date = new Date(d.creatDate);
+			          var y = date.getFullYear();
+                        var m = date.getMonth() + 1;
+                        m = m < 10 ? '0' + m : m;
+                        var d = date.getDate();
+                        d = d < 10 ? ('0' + d) : d;
+                       return y + '-' + m + '-' + d;}
+                   }
+			      ,{field:'title', title: '描述', align:'center'}
+			      ,{field:'type', title: '类型', align:'center'}
+			      ,{field:'storageNum', title: '收藏数量', align:'center'}
+			      , {
+                    field: 'status',
+                    title: '是否公开',
+                    align: 'center',
+                    templet: function (d) {
+                        var state = "";
+                        if (d.status == "1") {
+                            state = "<input type='checkbox' value='" + d.imageId + "' id='status' lay-filter='stat' checked='checked' name='status'  lay-skin='switch' lay-text='公开|私有' >";
+                        }
+                        else {
+                            state = "<input type='checkbox' value='" + d.imageId + "' id='status' lay-filter='stat'  name='status'  lay-skin='switch' lay-text='公开|私有' >";
+
+                        }
+                        return state;
+                    }}
+                    , {
+                    field: 'imageUrl',
+                    title: '图像',
+                    event: 'viewImageRow',
+                    align: 'center',
+                    templet: function (d) {
+                        return "<img src='" + d.imageUrl + "'>";
+                    }}
+			      ,{fixed:'right', width:100 ,title: '操作', align:'center', templet: '#table_bar'}
+			    ]]
+			    ,id: 'table'
+			    ,page: true
+			    ,limits:[5,10,20,50,100],
+			   limit:10
+			  });
+
+			//监听工具条 table_bar
+				table.on('tool(table)', function(obj) { //注：tool是工具条事件名，test是table原始容器的属性 lay-filter="对应的值"
+					var data = obj.data //获得当前行数据
+					, layEvent = obj.event; //获得 lay-event 对应的值
+					if (layEvent ==="searchByImage"){
+					    var imageurl = data.imageUrl;
+					    var img_url = {"img_url":imageurl}
+					    parent.xadmin.del_tab(md5("/searchImageByThisImage?imageUrl="+encodeURIComponent(JSON.stringify(img_url))));
+					    top.layer.load(0, {
+                                shadeClose: false,
+                                title: '加载中..',
+                                shade: [0.5,'#000']
+                            });
+					     parent.xadmin.add_tab(data.title, "/searchImageByThisImage?imageUrl="+encodeURIComponent(JSON.stringify(img_url)))
+
+					}
+					if (layEvent ==="viewImageRow"){
+					    var imageurl = data.imageUrl;
+					     $.pictureViewer({
+                            images: [imageurl], //需要查看的图片，数据类型为数组
+                            initImageIndex: 1, //初始查看第几张图片，默认1
+                            scrollSwitch: false //是否使用鼠标滚轮切换图片，默认false
+                        });
+					}
+				});
+
+				form.on('switch(stat)', function (data) {
+            var contexts;
+            var sta;
+            var x = data.elem.checked;//判断开关状态
+            if (x==true) {
+                contexts = "显示";
+                sta=1;
+            } else {
+                contexts = "隐藏";
+                sta=0;
+            }
+            console.log(data.value);
+
+             $.post("/updateAccessoriesStaus",{
+                    status:sta,
+                    imageId:data.value,
+                    },function(result){
+                    if(result.status){
+                        layer.alert(result.msg);
+
+                    }else{
+                        layer.alert(result.msg);
+                    }
+                },'json');
+
+
+				});
+		});
+
+        function reload_data(){
+            var q = $("#q").val();
+            table.reload('table', {
+                 where: {q:q},page: {
+                     curr: 1 //重新从第 1 页开始
+                 }
+            });
+        }
+        function clear_data(){
+            location.reload();
+        }
+        function addNewData() {
+            parent.xadmin.add_tab("添加服饰品", "/addAccessories")
+        }
+    </script>
+<script type="text/html" id="table_bar">
+<div class="layui-btn-group">
+    <a class="layui-btn layui-btn-xs" lay-event="searchByImage">以图搜图</a>
+</div>
+</script>
+
+</html>

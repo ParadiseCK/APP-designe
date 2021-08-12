@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<link rel="stylesheet" type="text/css" href="../static/lib/layui/css/layui.css" />
+<style type="text/css">
+    #dept_main, #dept_particulars{
+        width: 48.5%;
+        display: inline-block;
+        vertical-align: top;
+        padding: 20px;
+        background: white;
+        box-sizing: border-box;
+    }
+    #dept_tree{
+        margin-top: 20px;
+    }
+</style>
+<body>
+
+
+
+<div id="dept_main" style="margin-right: 2%;">
+    <fieldset class="layui-elem-field layui-field-title">
+        <legend>所有类别</legend>
+    </fieldset>
+    <button class="layui-btn layui-btn-sm layui-btn-radius layui-btn-normal" lay-demo="addDept"  onclick="addRoot()"><i class="layui-icon">&#xe654;</i>添加一级分类</button>
+    <button class="layui-btn layui-btn-sm layui-btn-radius layui-btn-normal" lay-demo="gain" onclick="addSecond()"><i class="layui-icon">&#xe654;</i>添加二级分类</button>
+    <button class="layui-btn layui-btn-sm layui-btn-radius layui-btn-normal" lay-demo="gain" onclick="deleteNode()"><i class="layui-icon">&#xe640;</i>删除节点</button>
+    <div id="dept_tree">
+    </div>
+
+
+    <form class="layui-form">
+
+        <div id="xtree1" class="xtree_contianer"></div>
+
+    </form>
+</div>
+<div id="dept_particulars">
+    <fieldset class="layui-elem-field layui-field-title">
+        <legend>类别详情</legend>
+    </fieldset>
+    <div id="dept_home">
+        <form class="layui-form">
+            <div class="layui-form-item">
+                <label class="layui-form-label">一级分类：</label>
+                <div class="layui-input-block">
+                    <input type="text"  id="firstClass" lay-verify="required" class="layui-input" />
+                     <input type="text"  id="firstClassValue" style="display:none" />
+                </div>
+            </div>
+            <div class="layui-form-item" id="secondClassShow">
+                <label class="layui-form-label">二级分类：</label>
+                <div class="layui-input-block">
+                    <input type="text" id="secondClass" lay-verify="required"  class="layui-input" />
+                    <input type="text"  id="secondClassValue" style="display:none" />
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label"></label>
+                <div class="layui-input-block">
+                    <button  class="layui-btn layui-btn-radius layui-btn-normal"  type="button" onclick="updateData()">
+                        <i class="layui-icon">&#xe642;</i>修改并保存
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div id="addrootdetail" style="display:none;">
+        <form class="layui-form" >
+            <div class="layui-form-item">
+                <label class="layui-form-label">分类名称</label>
+                <div class="layui-input-block" style="margin-top: 20px;margin-left: 120px;margin-right: 50px;min-height: 36px;">
+                    <input type="text" name="title" id="rootTitle" lay-verify="required" class="layui-input" />
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-input-block" style="margin-top: 20px;text-align:center;">
+                    <button  class="layui-btn layui-btn-radius layui-btn-normal"  type="button" onclick="saveRoot()">
+                        <i class="layui-icon">&#xe642;</i>保存
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div id="add2detail" style="display:none;">
+        <form class="layui-form" >
+            <div class="layui-form-item">
+                <label class="layui-form-label" style="width: 100px">所属一级分类</label>
+                <div class="layui-input-block" style="margin-top: 20px;margin-left: 140px;margin-right: 50px;min-height: 36px;">
+                    <input type="text" name="rootName" id="rootName" lay-verify="required" class="layui-input" />
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label" style="width: 100px">二级分类名称</label>
+                <div class="layui-input-block" style="margin-top: 20px;margin-left: 140px;margin-right: 50px;min-height: 36px;">
+                    <input type="text" name="secondName" id="secondName" lay-verify="required" class="layui-input" />
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <div class="layui-input-block" style="margin-top: 20px;text-align:center;">
+                    <button  class="layui-btn layui-btn-radius layui-btn-normal" type="button" onclick="saveSecond()" >
+                        <i class="layui-icon">&#xe642;</i>保存
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+<script type="text/javascript" src="../static/graphics/js/jquery.min.js"></script>
+<script type="text/javascript" src="../static/lib/layui/layui.js" charset="utf-8"></script>
+<script type="text/javascript" src="../static/lib/layui-tree2.0-master/layui-xtree/layui-xtree.js"></script>
+<script type="text/javascript">
+    var rootValue ="";
+    var treeData = {{ treeData|tojson}};
+    var treeData1 = [
+            {
+                title: "节点1", value: "jd1", data: [
+                  { title: "节点1.1", value: "jd1.1"}
+                , { title: "节点1.2", value: "jd1.2" }
+                , { title: "节点1.3", value: "jd1.3" }
+                , { title: "节点1.4", value: "jd1.4" }
+                ]
+            }
+            , {
+                title: "节点2", value: "jd2", data: [
+                  { title: "节点2.1", value: "jd2.1" }
+                , { title: "节点2.2", value: "jd2.2"}
+                , { title: "节点2.3", value: "jd2.3" }
+                , { title: "节点2.4", value: "jd2.4" }
+                ]
+            }
+            , { title: "节点3", value: "jd3" }
+            , { title: "节点4", value: "jd4" }
+    ];
+    var fenleiTree = null ;
+    var form = null;
+layui.use(['form'], function () {
+        form = layui.form;
+
+        fenleiTree = new layuiXtree({
+            elem: 'xtree1'    //(必填) 放置xtree的容器，样式参照 .xtree_contianer
+            , form: form        //(必填) layui 的 from
+            , data: treeData   //(必填) json数据
+            , isopen: true
+            , click: function (data) { //节点选中状态改变事件监听，全选框有自己的监听事件
+                $("#rootName").val(data.elem.title);
+                rootValue = data.value;
+                var poCk = fenleiTree.GetParent(data.value);
+
+                if (poCk!=null){
+
+                    $("#secondClassShow").show();
+                    $("#firstClass").val(poCk.title);
+                    $("#secondClass").val(data.elem.title);
+                    $("#firstClassValue").val(poCk.value);
+                    $("#secondClassValue").val(data.value);
+                    console.log(poCk.title);
+                    console.log(poCk.value);
+                }
+                else {
+                    $("#firstClassValue").val(data.value);
+                    $("#firstClass").val(data.elem.title);
+                    $("#secondClassShow").hide();
+                    console.log('无父级节点或value值错误');
+                }
+
+                //设置只能单选
+        　　　　　　　　　　　 //获取所有选中节点
+                var oCks = fenleiTree.GetAllCheckBox();
+        　　　　　　　　　　　 // 循环数组，如果值不等于当前选中的值，将选中状态设为false
+                for (var i = 0; i < oCks.length; i++) {
+                    if(oCks[i].value!=data.value) {
+                        $(oCks[i]).prop("checked",false)
+                    }
+                }
+                form.render('checkbox');
+            }
+        });
+});
+
+
+var layerOpen1;
+var layerOpen2;
+function addRoot() {
+    layerOpen1 = layer.open({
+                type: 1,  //可传入的值有：0（信息框，默认）1（页面层）2（iframe层）3（加载层）4（tips层）
+                title: ['添加一级分类', 'font-size:18px; color:orange;'],//数组第二项可以写任意css样式；如果你不想显示标题栏，你可以title: false
+                content: $('#addrootdetail'),
+                area: '500px'
+                });
+}
+function addSecond() {
+    if (rootValue ==""){
+        layer.alert("请选择一级分类节点！");
+        return false;
+    }
+    var father_ = rootValue.split("-");
+
+    if (father_.length >2){
+        layer.alert("请选择一级分类节点！");
+        return false;
+    }
+
+    layerOpen2 = layer.open({
+                type: 1,  //可传入的值有：0（信息框，默认）1（页面层）2（iframe层）3（加载层）4（tips层）
+                title: ['添加二级分类', 'font-size:18px; color:orange;'],//数组第二项可以写任意css样式；如果你不想显示标题栏，你可以title: false
+                content: $('#add2detail'),
+                area: '500px'
+                });
+}
+
+function saveRoot() {
+    var title = $("#rootTitle").val();
+    var save_url = "/saveInspirationFenleiRoot";
+            $.post(save_url,{
+                    title:title,
+                    },function(result){
+                    if(result.status){
+                        layer.close(layerOpen1);
+                        layer.alert(result.msg);
+                        window.location.reload();
+                    }else{
+                        layer.alert(result.msg);
+                    }
+                },'json');
+}
+function saveSecond() {
+    var title = $("#secondName").val();
+    var father = rootValue;
+
+
+
+    var save_url = "/saveInspirationFenleiSecond";
+            $.post(save_url,{
+                    title:title,
+                    father:father,
+                    },function(result){
+
+                    if(result.status){
+                        console.log(treeData);
+                        layer.close(layerOpen2);
+                        layer.alert(result.msg);
+                        window.location.reload();
+
+                    }else{
+                        layer.alert(result.msg);
+                    }
+                },'json');
+}
+
+function  updateData() {
+    var firstName = "";
+    var firstId = "";
+    var seconName = ""
+    var secondId = "";
+    var fenleis = new Array();
+    if ($("#secondClass").is(":hidden")){
+        firstName = $("#firstClass").val();
+        firstId = $("#firstClassValue").val();
+        if(firstName==""){
+            layer.alert("请填写一级分类");
+        }
+        fenleis.push({'value':firstId, 'title':firstName})
+    }
+    else {
+        firstName = $("#firstClass").val();
+        firstId = $("#firstClassValue").val();
+        seconName = $("#secondClass").val();
+        secondId = $("#secondClassValue").val();
+        if(firstName==""){
+            layer.alert("请填写一级分类");
+        }
+        if(seconName==""){
+            layer.alert("请填写二级分类");
+        }
+        fenleis.push({'value':firstId, 'title':firstName})
+        fenleis.push({'value':secondId, 'title':seconName})
+
+    }
+    var updateUrl = "/updateInspirationFenlei";
+    var fenleidata = JSON.stringify(fenleis);
+    $.post(updateUrl,{
+                    fenleidata:fenleidata
+                    },function(result){
+                    if(result.status){
+                        layer.alert(result.msg);
+                        window.location.reload();
+
+                    }else{
+                        layer.alert(result.msg);
+                    }
+                },'json');
+}
+
+function deleteNode(){
+ if (rootValue ==""){
+        layer.alert("请选择任一分类节点！");
+        return false;
+    }
+    var deleteUrl = "deleteInspirationFenlei";
+    layer.confirm('您确定要删除吗？', {
+          btn: ['确定','取消'] //按钮
+        }, function(){
+          $.post(deleteUrl,{
+                    delId:rootValue
+                    },function(result){
+                    if(result.status){
+                        layer.alert(result.msg);
+                        window.location.reload();
+
+                    }else{
+                        layer.alert(result.msg);
+                    }
+                },'json');
+        }, function(){
+          layer.msg('已为您取消', {
+            time: 5000, //20s后自动关闭
+            btn: ['知道了']
+          });
+        });
+
+}
+</script>
+</html>

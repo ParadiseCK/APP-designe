@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<link rel="stylesheet" type="text/css" href="../static/lib/layui/css/layui.css" />
+<style type="text/css">
+    #dept_main, #dept_particulars{
+        width: 48.5%;
+        display: inline-block;
+        vertical-align: top;
+        padding: 20px;
+        background: white;
+        box-sizing: border-box;
+    }
+    #dept_tree{
+        margin-top: 20px;
+    }
+</style>
+<body>
+
+
+
+<div id="dept_main" style="margin-right: 2%;">
+    <fieldset class="layui-elem-field layui-field-title">
+        <legend>所有菜单</legend>
+    </fieldset>
+    <button class="layui-btn layui-btn-sm layui-btn-radius layui-btn-normal" lay-demo="addDept"  onclick="update()">更新权限</button>
+    <div id="dept_tree">
+    </div>
+
+
+    <form class="layui-form">
+
+        <div id="xtree1" class="xtree_contianer"></div>
+
+    </form>
+</div>
+</body>
+<script type="text/javascript" src="../static/graphics/js/jquery.min.js"></script>
+<script type="text/javascript" src="../static/lib/layui/layui.js" charset="utf-8"></script>
+<script type="text/javascript" src="../static/lib/layui-tree2.0-master/layui-xtree/layui-xtree.js"></script>
+<script type="text/javascript">
+    var treeData = {{ treeData|tojson}};
+    var menuIds = '{{ menuIds }}';
+        console.log(menuIds);
+    var  quanxianTree;
+    layui.use(['form'], function () {
+        var form = layui.form;
+
+        quanxianTree = new layuiXtree({
+            elem: 'xtree1'    //(必填) 放置xtree的容器，样式参照 .xtree_contianer
+            , form: form        //(必填) layui 的 from
+            , data: treeData   //(必填) json数据
+            , isopen: true
+            , click: function (data) { //节点选中状态改变事件监听，全选框有自己的监听事件
+                form.render('checkbox');
+            }
+        });
+
+        var nodes = quanxianTree.GetAllCheckBox();
+        console.log(nodes);
+        var menuIdsArry = menuIds.split(',');
+        for (var i = 0; i< menuIdsArry.length; i++){
+            for (var j =0; j< nodes.length; j++){
+                if (menuIdsArry[i]==nodes[j].value){
+                    $(nodes[j]).prop("checked",true);
+                }
+            }
+        }
+        form.render('checkbox');
+
+        window.getAllChecked = function () {
+            var newArray = new Array();
+            for (var j =0; j< nodes.length; j++){
+                if(nodes[j].checked){
+                    newArray.push(nodes[j].value)
+                }
+                }
+            return newArray;
+        }
+
+});
+
+function update() {
+   var array =  getAllChecked();
+   var menuIds = array.toString();
+   $.post("/updateQuanXian",{
+                    menuIds:menuIds,
+                    userId:'{{ userId }}',
+                    },function(result){
+                    if(result.status){
+                        layer.alert(result.msg);
+
+                    }else{
+                        layer.alert(result.msg);
+                    }
+                },'json');
+}
+</script>
+</html>
