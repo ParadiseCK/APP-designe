@@ -19,7 +19,7 @@ import time
 app = Flask(__name__)
 app.config['JSON_AS_ASCII'] = False
 config = {
-        'host': '127.0.0.1',
+        'host': '139.196.95.185',
         'port': 3306,
         'user': 'root',
         'password': '123456',
@@ -67,7 +67,7 @@ def graphics():
 def graphicsFenlei():
     db = pymysql.connect(**config)
     cursor = db.cursor()
-    sql = "select * from graphicsFenlei"
+    sql = "select * from graphicsfenlei"
     print(sql)
     cursor.execute(sql)
     items = sql_fetch_json(cursor)
@@ -130,7 +130,7 @@ def saveGraphicFenleiRoot():
     title = request.form.get("title")
     db = pymysql.connect(**config)
     cursor = db.cursor()
-    sql = "select value from graphicsFenlei WHERE father = -1"
+    sql = "select value from graphicsfenlei WHERE father = -1"
     cursor.execute(sql)
     result = sql_fetch_json(cursor)
     value = ""
@@ -141,7 +141,7 @@ def saveGraphicFenleiRoot():
         for r in result:
             V.append(int(r["value"].split("-")[-1]))
         value = "fenlei-" + str(max(V) + 1)
-    sql1 = "INSERT INTO  graphicsFenlei (value,title, father )VALUES ('{}','{}','{}')".format(value, title, -1)
+    sql1 = "INSERT INTO  graphicsfenlei (value,title, father )VALUES ('{}','{}','{}')".format(value, title, -1)
     print(sql1)
 
     try:
@@ -160,7 +160,7 @@ def saveGraphicFenleiSecond():
     father = request.form.get("father")
     db = pymysql.connect(**config)
     cursor = db.cursor()
-    sql = "select value from graphicsFenlei WHERE father = '{}'".format(father)
+    sql = "select value from graphicsfenlei WHERE father = '{}'".format(father)
     print(sql)
     cursor.execute(sql)
     result = sql_fetch_json(cursor)
@@ -172,7 +172,7 @@ def saveGraphicFenleiSecond():
         for r in result:
             V.append(int(r["value"].split("-")[-1]))
         value = father + "-" + str(max(V) + 1)
-    sql1 = "INSERT INTO  graphicsFenlei (value,title, father )VALUES ('{}','{}','{}')".format(value, title, father)
+    sql1 = "INSERT INTO  graphicsfenlei (value,title, father )VALUES ('{}','{}','{}')".format(value, title, father)
     print(sql1)
 
     try:
@@ -195,7 +195,7 @@ def updateGraphicsFenlei():
             cursor = db.cursor()
             title = f["title"]
             value = f["value"]
-            sql = "update graphicsFenlei set title='{}' where value ='{}'".format(title, value)
+            sql = "update graphicsfenlei set title='{}' where value ='{}'".format(title, value)
             print(sql)
             cursor.execute(sql)
             db.commit()
@@ -208,7 +208,7 @@ def updateGraphicsFenlei():
 def deleteGraphicsFenlei():
     delId = request.form.get('delId')
     db = pymysql.connect(**config)
-    sql1 = "select father from graphicsFenlei WHERE value ='{}'".format(delId)
+    sql1 = "select father from graphicsfenlei WHERE value ='{}'".format(delId)
     sql2 = "delete from graphicsFenlei where value ='{}'".format(delId)
 
     print(sql1)
@@ -218,7 +218,7 @@ def deleteGraphicsFenlei():
     cursor1.execute(sql1)
     result = sql_fetch_json(cursor1)
     father = result[0]['father']
-    sql3 = "delete from graphicsFenlei where father ='{}'".format(delId)
+    sql3 = "delete from graphicsfenlei where father ='{}'".format(delId)
 
     try:
         if father == '-1':
@@ -239,7 +239,7 @@ def deleteGraphicsFenlei():
 def getGraphicsTreeData():
     db = pymysql.connect(**config)
     cursor = db.cursor()
-    sql = "select * from graphicsFenlei"
+    sql = "select * from graphicsfenlei"
     cursor.execute(sql)
     items = sql_fetch_json(cursor)
     treeData = []
@@ -318,7 +318,7 @@ def main():
     else:
         menuIdsArray =[]
     queryArray = tuple(menuIdsArray)
-    sql = "select * from mainTree where value in {}".format(queryArray)
+    sql = "select * from maintree where value in {}".format(queryArray)
     print(sql)
     cursor.execute(sql)
     items = sql_fetch_json(cursor)
@@ -339,7 +339,7 @@ def main():
 def mainTree():
     db = pymysql.connect(**config)
     cursor = db.cursor()
-    sql = "select * from mainTree"
+    sql = "select * from maintree"
     print(sql)
     cursor.execute(sql)
     items = sql_fetch_json(cursor)
@@ -362,7 +362,7 @@ def saveMainTreeRoot():
     icon = request.form.get("icon")
     db = pymysql.connect(**config)
     cursor = db.cursor()
-    sql = "select value from mainTree WHERE father = -1"
+    sql = "select value from maintree WHERE father = -1"
     cursor.execute(sql)
     result = sql_fetch_json(cursor)
     value = ""
@@ -373,7 +373,7 @@ def saveMainTreeRoot():
         for r in result:
             V.append(int(r["value"].split("-")[-1]))
         value = "main-" + str(max(V) + 1)
-    sql1 = "INSERT INTO  mainTree (value,title, father, icon )VALUES ('{}','{}','{}','{}')".format(value, title, -1, icon)
+    sql1 = "INSERT INTO  maintree (value,title, father, icon )VALUES ('{}','{}','{}','{}')".format(value, title, -1, icon)
     print(sql1)
 
     try:
@@ -392,7 +392,7 @@ def saveMainTreeSecond():
     url = request.form.get("url")
     db = pymysql.connect(**config)
     cursor = db.cursor()
-    sql = "select value from mainTree WHERE father = '{}'".format(father)
+    sql = "select value from maintree WHERE father = '{}'".format(father)
     print(sql)
     cursor.execute(sql)
     result = sql_fetch_json(cursor)
@@ -404,7 +404,7 @@ def saveMainTreeSecond():
         for r in result:
             V.append(int(r["value"].split("-")[-1]))
         value = father + "-" + str(max(V) + 1)
-    sql1 = "INSERT INTO  mainTree (value,title, father, url )VALUES ('{}','{}','{}','{}')".format(value, title, father,url)
+    sql1 = "INSERT INTO  maintree (value,title, father, url )VALUES ('{}','{}','{}','{}')".format(value, title, father,url)
     print(sql1)
 
     try:
@@ -427,7 +427,7 @@ def updateMainTree():
             icon =f["icon"]
             url = f["url"]
             value = f["value"]
-            sql = "update mainTree set title='{}', icon='{}', url='{}' where value ='{}'".format(title,icon, url, value)
+            sql = "update maintree set title='{}', icon='{}', url='{}' where value ='{}'".format(title,icon, url, value)
             print(sql)
             cursor.execute(sql)
             db.commit()
@@ -440,8 +440,8 @@ def updateMainTree():
 def deleteMainTree():
     delId = request.form.get('delId')
     db = pymysql.connect(**config)
-    sql1 = "select father from mainTree WHERE value ='{}'".format(delId)
-    sql2 = "delete from mainTree where value ='{}'".format(delId)
+    sql1 = "select father from maintree WHERE value ='{}'".format(delId)
+    sql2 = "delete from maintree where value ='{}'".format(delId)
 
     print(sql1)
     cursor1 = db.cursor()
@@ -450,7 +450,7 @@ def deleteMainTree():
     cursor1.execute(sql1)
     result = sql_fetch_json(cursor1)
     father = result[0]['father']
-    sql3 = "delete from graphicsFenlei where father ='{}'".format(delId)
+    sql3 = "delete from graphicsfenlei where father ='{}'".format(delId)
 
     try:
         if father == '-1':
@@ -484,7 +484,7 @@ def getQuanXianTree():
     userId = request.args.get("userId")
     db = pymysql.connect(**config)
     cursor = db.cursor()
-    sql = "select * from mainTree"
+    sql = "select * from maintree"
     print(sql)
     cursor.execute(sql)
     items = sql_fetch_json(cursor)
@@ -591,7 +591,7 @@ def addGraphicStorage():
             graphics = sql_fetch_json(cursor1)
             graphic = graphics[0]
             storageId = username + imageId
-            sql2 = "INSERT INTO  graphicsStorage (username,imageId, imageUrl, title, type, provider, creatDate,storageId ) VALUES ('{}','{}','{}','{}','{}','{}','{}','{}')".format(
+            sql2 = "INSERT INTO  graphicsstorage (username,imageId, imageUrl, title, type, provider, creatDate,storageId ) VALUES ('{}','{}','{}','{}','{}','{}','{}','{}')".format(
                                             username, imageId,graphic['imageUrl'],
                                            graphic['title'],graphic['type'],
                                            graphic['provider'],graphic['creatDate'], storageId)
@@ -611,7 +611,7 @@ def addGraphicStorage():
     if status =="0":
         try:
             cursor3 = db.cursor()
-            sql3 = "delete from graphicsStorage where imageId ='{}'".format(imageId)
+            sql3 = "delete from graphicsstorage where imageId ='{}'".format(imageId)
             cursor3.execute(sql3)
 
             storageNum = storageNum - 1
@@ -632,7 +632,7 @@ def getMySorageGraphicsById():
     db = pymysql.connect(**config)
     try:
         cursor = db.cursor()
-        sql = "select * from graphicsStorage where username='{}' and imageId ='{}'".format(username,imageId)
+        sql = "select * from graphicsstorage where username='{}' and imageId ='{}'".format(username,imageId)
         print(sql)
         count = cursor.execute(sql)
         db.commit()
@@ -1005,7 +1005,7 @@ def addStylecStorage():
             graphics = sql_fetch_json(cursor1)
             graphic = graphics[0]
             storageId = username + imageId
-            sql2 = "INSERT INTO  stylesStorage (username,imageId, imageUrl, title, type, provider, creatDate,storageId ) VALUES ('{}','{}','{}','{}','{}','{}','{}','{}')".format(
+            sql2 = "INSERT INTO  stylesstorage (username,imageId, imageUrl, title, type, provider, creatDate,storageId ) VALUES ('{}','{}','{}','{}','{}','{}','{}','{}')".format(
                                             username, imageId,graphic['imageUrl'],
                                            graphic['title'],graphic['type'],
                                            graphic['provider'],graphic['creatDate'], storageId)
@@ -1025,7 +1025,7 @@ def addStylecStorage():
     if status =="0":
         try:
             cursor3 = db.cursor()
-            sql3 = "delete from stylesStorage where imageId ='{}'".format(imageId)
+            sql3 = "delete from stylesstorage where imageId ='{}'".format(imageId)
             cursor3.execute(sql3)
 
             storageNum = storageNum - 1
@@ -1046,7 +1046,7 @@ def getMySorageStylesById():
     db = pymysql.connect(**config)
     try:
         cursor = db.cursor()
-        sql = "select * from stylesStorage where username='{}' and imageId ='{}'".format(username,imageId)
+        sql = "select * from stylesstorage where username='{}' and imageId ='{}'".format(username,imageId)
         print(sql)
         count = cursor.execute(sql)
         db.commit()
@@ -1073,13 +1073,13 @@ def stylesStorageManageList():
     cursor1 = db.cursor()
     cursor2 = db.cursor()
     if query == None or query == "":
-        sql1 = "select * from stylesStorage where username = '{}' limit {}, {} ".format(username, start, size)
-        sql2 = "select * from stylesStorage where username = '{}'".format(username)
+        sql1 = "select * from stylesstorage where username = '{}' limit {}, {} ".format(username, start, size)
+        sql2 = "select * from stylesstorage where username = '{}'".format(username)
         print(sql1)
         print(sql2)
     else:
-        sql1 = "select * from stylesStorage where username = '{}' and type like '{}' limit {}, {} ".format(username, query, start, size)
-        sql2 = "select * from stylesStorage where username = '{}' and type like '{}' ".format(username, query)
+        sql1 = "select * from stylesstorage where username = '{}' and type like '{}' limit {}, {} ".format(username, query, start, size)
+        sql2 = "select * from stylesstorage where username = '{}' and type like '{}' ".format(username, query)
         print(sql1)
         print(sql2)
     cursor1.execute(sql1)
